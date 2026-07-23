@@ -1,0 +1,10 @@
+[package]
+name = "sim-runner"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = { workspace = true }
+arrow = { workspace = true }
+parquet = { workspace = true }
+libc = { workspace = true }
