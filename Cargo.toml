@@ -2,10 +2,8 @@
 resolver = "2"
 members = [
     "sim-runner",
-    "hom-sweep",
     "hom-sweep-fine",
     "core-scaling",
-    "core-scaling-vs-quisp",
 ]
 
 [workspace.dependencies]

@@ -262,21 +262,3 @@ pub fn run_telemetry(
 
     rate.context("fresnel exited before emitting enough telemetry lines")
 }
-
-// The prebuilt simulator binary; building it is the fresnel side's job,
-// so a sweep never triggers (or waits on) a compile.
-pub fn fresnel_binary() -> Result<PathBuf> {
-    let path = fresnel_dir().join("target/release/fresnel");
-    if !path.is_file() {
-        bail!(
-            "{} not found; build fresnel with cargo build --release first",
-            path.display()
-        );
-    }
-    Ok(path)
-}
-
-pub fn fresnel_dir() -> PathBuf {
-    let home = std::env::var("HOME").expect("HOME not set");
-    Path::new(&home).join("fresnel")
-}

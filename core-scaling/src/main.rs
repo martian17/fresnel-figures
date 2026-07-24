@@ -1,7 +1,9 @@
 use std::io::Write;
+use std::env;
+use std::path::{PathBuf};
 
 use anyhow::Result;
-use sim_runner::{fresnel_binary, fresnel_dir, run_telemetry};
+use sim_runner::{run_telemetry};
 
 // balanced arms (full HOM interference) as the representative workload
 const ARM1_CM: u32 = 15;
@@ -29,8 +31,12 @@ fn cpu_order() -> Result<Vec<usize>> {
 }
 
 fn main() -> Result<()> {
-    let fresnel = fresnel_dir();
-    let binary = fresnel_binary()?;
+    let args: Vec<String> = env::args().collect();
+    if args.is_empty() {
+        panic!("You must provide the path");
+    }
+    let fresnel = PathBuf::from(args[1].clone());
+    let binary = fresnel.join("target/release/fresnel");
     let cpus = cpu_order()?;
     eprintln!("cpu order: {cpus:?}");
 
@@ -46,7 +52,10 @@ fn main() -> Result<()> {
             .join(",");
         match run_telemetry(&fresnel, &binary, &args, Some(&cpu_list), MEASURE_WINDOW_S) {
             Ok(mut rate) => {
-                rate *= 3.0;
+                // 4 packets arrive at the sensor. 2 packets enter the beam splitter, before that 2 packets
+                //   individually get passed through ODL, so for every 4 observed packet there
+                //   should be 8.
+                rate *= 2.0;
                 eprintln!("{n} cores ({cpu_list}): {rate:.1} events/s");
                 writeln!(csv, "{n},\"{cpu_list}\",{rate}")?;
                 csv.flush()?;

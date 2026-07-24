@@ -1,10 +1,10 @@
+# How to run
+Build Fresnel first with --release.
+
 ```sh
-cargo run --release -p hom-sweep-fine
-python hom-sweep-fine/plot.py
-
-cargo run --release -p core-scaling-vs-quisp
-python core-scaling-vs-quisp/plot.py
-
-cargo run --release -p core-scaling
+FRESNEL_DIR="/path/to/fresnel" && \
+cargo run --release -p hom-sweep-fine -- $FRESNEL_DIR && \
+python hom-sweep-fine/plot.py && \
+cargo run --release -p core-scaling -- $FRESNEL_DIR && \
 python core-scaling/plot.py
 ```

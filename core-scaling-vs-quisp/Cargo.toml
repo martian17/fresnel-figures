@@ -1,8 +1,0 @@
-[package]
-name = "core-scaling-vs-quisp"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-anyhow = { workspace = true }
-sim-runner = { workspace = true }

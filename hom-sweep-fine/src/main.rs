@@ -1,8 +1,10 @@
 use std::io::Write;
 use std::time::Duration;
+use std::env;
+use std::path::{PathBuf};
 
 use anyhow::Result;
-use sim_runner::{fresnel_binary, fresnel_dir, run_once};
+use sim_runner::{run_once};
 
 // arm1 stays fixed while arm2 sweeps in 0.1 cm steps, so the path
 // difference arm2 - arm1 covers -15.0..=+15.0 cm
@@ -12,8 +14,12 @@ const STEP_CM: f64 = 0.1;
 const RUN_DURATION: Duration = Duration::from_millis(100);
 
 fn main() -> Result<()> {
-    let fresnel = fresnel_dir();
-    let binary = fresnel_binary()?;
+    let args: Vec<String> = env::args().collect();
+    if args.is_empty() {
+        panic!("You must provide the path");
+    }
+    let fresnel = PathBuf::from(args[1].clone());
+    let binary = fresnel.join("target/release/fresnel");
 
     let mut csv = std::fs::File::create("hong-ou-mandel-fine.csv")?;
     writeln!(csv, "delta_cm,arm2_cm,packets_per_second")?;
