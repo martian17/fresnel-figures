@@ -51,11 +51,8 @@ fn main() -> Result<()> {
             .collect::<Vec<_>>()
             .join(",");
         match run_telemetry(&fresnel, &binary, &args, Some(&cpu_list), MEASURE_WINDOW_S) {
-            Ok(mut rate) => {
+            Ok(rate) => {
                 // 4 packets arrive at the sensor. 2 packets enter the beam splitter, before that 2 packets
-                //   individually get passed through ODL, so for every 4 observed packet there
-                //   should be 8.
-                rate *= 2.0;
                 eprintln!("{n} cores ({cpu_list}): {rate:.1} events/s");
                 writeln!(csv, "{n},\"{cpu_list}\",{rate}")?;
                 csv.flush()?;

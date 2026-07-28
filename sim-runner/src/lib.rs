@@ -172,7 +172,7 @@ pub struct TelemetrySample {
 }
 
 // Parses one line of the fresnel throughput monitor, e.g.
-// `[   3s] SPD1:    123456 pkt/s | ... | total: 246912 pkts, 0.000123 sim-s`
+// [   1s] All: 17274226 pkt/s | SPD1-2:  2878000  2877600 pkt/s |  14.24% of real time (avg 14.23%) | total: 17274226 pkts, 0.142 sim-s
 pub fn parse_telemetry_line(line: &str) -> Option<TelemetrySample> {
     let elapsed_s = line
         .strip_prefix('[')?
